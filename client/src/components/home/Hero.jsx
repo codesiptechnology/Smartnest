@@ -125,17 +125,21 @@ export function Hero() {
       .map((p) => ({ src: resolveImg(p.image), name: p.name }))
       .sort(() => Math.random() - 0.5); // random shuffle each render
 
-    const pool =
+    const base =
       withImg.length >= 6
-        ? withImg.slice(0, 12) // use up to 12 random product images
-        : FALLBACK_POOL.map((src, i) => ({ // fallback to category images
+        ? withImg.slice(0, 12)
+        : FALLBACK_POOL.map((src, i) => ({
             src,
             name: ["CCTV", "Smart Locks", "Automated Gates", "Smart Curtains", "Lifts & Panels", "Touch Controls", "Sensors", "Smart Kits"][i],
           }));
 
+    // Always fill all 12 POSITION slots by cycling through the base pool
+    const pool = Array.from({ length: POSITIONS.length }, (_, i) => base[i % base.length]);
+
     return pool.map((item, i) => ({ ...item, ...POSITIONS[i % POSITIONS.length] }));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
+
 
   // Auto-advance slideshow every 3 seconds
   useEffect(() => {
@@ -180,8 +184,8 @@ export function Hero() {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: "+=280%",   // tighter range — categories appear sooner after cards exit
-            scrub: 3,        // heavy damping = very smooth & slow response
+            end: "+=420%",   // wider range — animation plays out slower as you scroll
+            scrub: 5,        // heavier damping = even smoother & slower response
             pin: true,
             anticipatePin: 1,
           },

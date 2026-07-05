@@ -35,11 +35,11 @@ export function Navbar() {
   const searchRef = useRef(null);
   const searchContainerRef = useRef(null);
   const accountDropdownRef = useRef(null);
-  
+
   const navigate = useNavigate();
   const location = useLocation();
   const activePath = location.pathname;
-  
+
   const { cart, cartCount, removeFromCart, wishlist, wishlistCount, toggleWishlist } = useCart();
   const { products, categories, brands } = useStore();
   const { user, isAuthenticated, logout } = useUserAuth();
